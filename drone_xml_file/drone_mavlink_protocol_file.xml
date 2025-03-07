@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<mavlink>
+    <version>2.0</version>
+
+    <!-- 사용자 정의 MAVLink 확장 -->
+    <dialect>custom_drone</dialect>
+
+    <messages>
+        <!-- 드론 이륙 명령 -->
+        <message id="200" name="DRONE_TAKEOFF">
+            <field type="float" name="altitude" units="m">목표 이륙 고도</field>
+        </message>
+
+        <!-- 드론 착륙 명령 -->
+        <message id="201" name="DRONE_LAND">
+            <field type="uint8_t" name="land_mode" enum="LAND_MODE">착륙 모드 (0=Normal, 1=Precision)</field>
+        </message>
+
+        <!-- 드론 속도 조절 -->
+        <message id="202" name="DRONE_SET_VELOCITY">
+            <field type="float" name="vx" units="m/s">X축 속도</field>
+            <field type="float" name="vy" units="m/s">Y축 속도</field>
+            <field type="float" name="vz" units="m/s">Z축 속도</field>
+        </message>
+
+        <!-- 드론 위치 설정 (GPS 좌표) -->
+        <message id="203" name="DRONE_SET_POSITION">
+            <field type="float" name="latitude" units="deg">위도</field>
+            <field type="float" name="longitude" units="deg">경도</field>
+            <field type="float" name="altitude" units="m">고도</field>
+        </message>
+
+        <!-- 드론 상태 정보 전송 -->
+        <message id="204" name="DRONE_STATUS">
+            <field type="uint8_t" name="battery" units="%">배터리 잔량 (0-100%)</field>
+            <field type="float" name="cpu_usage" units="%">CPU 사용률</field>
+            <field type="uint8_t" name="gps_fix" enum="GPS_FIX_TYPE">GPS 상태 (0=No Fix, 1=2D Fix, 2=3D Fix)</field>
+        </message>
+
+        <!-- PID 제어기 데이터 -->
+        <message id="205" name="DRONE_PID_TUNING">
+            <field type="float" name="kp">비례 이득</field>
+            <field type="float" name="ki">적분 이득</field>
+            <field type="float" name="kd">미분 이득</field>
+        </message>
+
+        <!-- 네트워크 상태 보고 -->
+        <message id="206" name="DRONE_NETWORK_STATUS">
+            <field type="uint8_t" name="signal_strength" units="%">네트워크 신호 강도 (0-100%)</field>
+            <field type="uint8_t" name="connection_type" enum="NETWORK_TYPE">연결 타입 (0=WiFi, 1=4G, 2=5G)</field>
+        </message>
+    </messages>
+
+    <!-- ENUM 정의 -->
+    <enums>
+        <enum name="LAND_MODE">
+            <entry value="0" name="NORMAL">일반 착륙</entry>
+            <entry value="1" name="PRECISION">정밀 착륙</entry>
+        </enum>
+
+        <enum name="GPS_FIX_TYPE">
+            <entry value="0" name="NO_FIX">GPS 신호 없음</entry>
+            <entry value="1" name="FIX_2D">2D Fix</entry>
+            <entry value="2" name="FIX_3D">3D Fix</entry>
+        </enum>
+
+        <enum name="NETWORK_TYPE">
+            <entry value="0" name="WIFI">WiFi</entry>
+            <entry value="1" name="CELLULAR_4G">4G 네트워크</entry>
+            <entry value="2" name="CELLULAR_5G">5G 네트워크</entry>
+        </enum>
+    </enums>
+</mavlink>
+
